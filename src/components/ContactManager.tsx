@@ -64,7 +64,7 @@ const ContactManager = () => {
     });
   };
 
-  const handleCSVImport = (importedContacts: Omit<Contact, 'id'>[]) => {
+  const handleCSVImport = (importedContacts: Contact[]) => {
     const contactsWithIds = importedContacts.map(contact => ({
       ...contact,
       id: Date.now() + Math.random()
@@ -143,7 +143,7 @@ const ContactManager = () => {
                 </div>
                 <div>
                   <Label htmlFor="contact-type">Type *</Label>
-                  <Select value={newContact.type} onValueChange={(value) => setNewContact({...newContact, type: value})}>
+                  <Select value={newContact.type} onValueChange={(value) => setNewContact({...newContact, type: value as "birthday" | "anniversary"})}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>

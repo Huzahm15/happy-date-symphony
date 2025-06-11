@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Calendar, CalendarCheck, Users, Send, Plus } from "lucide-react";
+import { Calendar, CalendarCheck, Users, Send, Plus, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -8,9 +8,17 @@ import { Badge } from "@/components/ui/badge";
 import MessageTemplates from "@/components/MessageTemplates";
 import ContactManager from "@/components/ContactManager";
 import Dashboard from "@/components/Dashboard";
+import EmailScheduler from "@/components/EmailScheduler";
+import LoginForm from "@/components/LoginForm";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // Set to true to skip login for demo
+
+  // Show login form if not authenticated
+  if (!isAuthenticated) {
+    return <LoginForm />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50">
@@ -27,10 +35,19 @@ const Index = () => {
                 <p className="text-sm text-gray-600">Birthday & Anniversary Message Automation</p>
               </div>
             </div>
-            <Badge variant="secondary" className="bg-green-100 text-green-800">
-              <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-              Active
-            </Badge>
+            <div className="flex items-center space-x-4">
+              <Badge variant="secondary" className="bg-green-100 text-green-800">
+                <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                Active
+              </Badge>
+              <Button 
+                variant="outline" 
+                onClick={() => setIsAuthenticated(false)}
+                className="text-sm"
+              >
+                Logout
+              </Button>
+            </div>
           </div>
         </div>
       </header>
@@ -39,7 +56,7 @@ const Index = () => {
       <div className="container mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           {/* Navigation Tabs */}
-          <TabsList className="grid w-full grid-cols-3 bg-white/60 backdrop-blur-sm">
+          <TabsList className="grid w-full grid-cols-4 bg-white/60 backdrop-blur-sm">
             <TabsTrigger value="dashboard" className="flex items-center space-x-2">
               <Calendar className="h-4 w-4" />
               <span>Dashboard</span>
@@ -52,11 +69,18 @@ const Index = () => {
               <Users className="h-4 w-4" />
               <span>Contacts</span>
             </TabsTrigger>
+            <TabsTrigger value="scheduler" className="flex items-center space-x-2">
+              <Clock className="h-4 w-4" />
+              <span>Scheduler</span>
+            </TabsTrigger>
           </TabsList>
 
           {/* Tab Content */}
           <TabsContent value="dashboard">
-            <Dashboard />
+            <div className="space-y-6">
+              <Dashboard />
+              <EmailScheduler />
+            </div>
           </TabsContent>
 
           <TabsContent value="templates">
@@ -65,6 +89,10 @@ const Index = () => {
 
           <TabsContent value="contacts">
             <ContactManager />
+          </TabsContent>
+
+          <TabsContent value="scheduler">
+            <EmailScheduler />
           </TabsContent>
         </Tabs>
       </div>

@@ -9,10 +9,20 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import CSVImportHandler from "./CSVImportHandler";
+
+interface Contact {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  type: "birthday" | "anniversary";
+  date: string;
+}
 
 const ContactManager = () => {
   const { toast } = useToast();
-  const [contacts, setContacts] = useState([
+  const [contacts, setContacts] = useState<Contact[]>([
     { id: 1, name: "Sarah Johnson", email: "sarah@example.com", type: "birthday", date: "1990-06-15", phone: "+1234567890" },
     { id: 2, name: "Mike & Emma", email: "mike.emma@example.com", type: "anniversary", date: "2018-06-18", phone: "+1234567891" },
     { id: 3, name: "David Chen", email: "david@example.com", type: "birthday", date: "1985-06-22", phone: "+1234567892" },
@@ -22,11 +32,12 @@ const ContactManager = () => {
     name: "",
     email: "",
     phone: "",
-    type: "birthday",
+    type: "birthday" as "birthday" | "anniversary",
     date: ""
   });
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isCSVImportOpen, setIsCSVImportOpen] = useState(false);
 
   const handleSaveContact = () => {
     if (!newContact.name || !newContact.email || !newContact.date) {
@@ -38,7 +49,7 @@ const ContactManager = () => {
       return;
     }
 
-    const contact = {
+    const contact: Contact = {
       id: Date.now(),
       ...newContact
     };
@@ -51,6 +62,15 @@ const ContactManager = () => {
       title: "Success",
       description: "Contact added successfully!"
     });
+  };
+
+  const handleCSVImport = (importedContacts: Omit<Contact, 'id'>[]) => {
+    const contactsWithIds = importedContacts.map(contact => ({
+      ...contact,
+      id: Date.now() + Math.random()
+    }));
+    
+    setContacts([...contacts, ...contactsWithIds]);
   };
 
   const deleteContact = (id: number) => {
@@ -70,7 +90,11 @@ const ContactManager = () => {
           <p className="text-gray-600">Manage your birthday and anniversary contacts</p>
         </div>
         <div className="flex space-x-2">
-          <Button variant="outline" className="border-purple-200 hover:bg-purple-50">
+          <Button 
+            variant="outline" 
+            className="border-purple-200 hover:bg-purple-50"
+            onClick={() => setIsCSVImportOpen(true)}
+          >
             <Upload className="h-4 w-4 mr-2" />
             Import CSV
           </Button>
@@ -193,6 +217,13 @@ const ContactManager = () => {
           </Card>
         ))}
       </div>
+
+      {/* CSV Import Dialog */}
+      <CSVImportHandler 
+        isOpen={isCSVImportOpen}
+        onClose={() => setIsCSVImportOpen(false)}
+        onImport={handleCSVImport}
+      />
     </div>
   );
 };

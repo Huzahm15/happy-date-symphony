@@ -2,6 +2,7 @@
 import { Calendar, CalendarCheck, Users, Send, TrendingUp } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 const Dashboard = () => {
   const upcomingEvents = [
@@ -38,34 +39,62 @@ const Dashboard = () => {
         ))}
       </div>
 
-      {/* Single Card for Upcoming Events */}
-      <Card className="bg-white/60 backdrop-blur-sm border-0 shadow-lg">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <CalendarCheck className="h-5 w-5 text-purple-600" />
-            <span>Upcoming Events</span>
-          </CardTitle>
-          <CardDescription>Events in the next 30 days</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {upcomingEvents.map((event, index) => (
-            <div key={index} className="flex items-center justify-between p-4 bg-white/50 rounded-lg border border-gray-100">
-              <div className="flex items-center space-x-3">
-                <div className={`p-2 rounded-full ${event.type === 'Birthday' ? 'bg-pink-100' : 'bg-purple-100'}`}>
-                  <Calendar className={`h-4 w-4 ${event.type === 'Birthday' ? 'text-pink-600' : 'text-purple-600'}`} />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Upcoming Events */}
+        <Card className="bg-white/60 backdrop-blur-sm border-0 shadow-lg">
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <CalendarCheck className="h-5 w-5 text-purple-600" />
+              <span>Upcoming Events</span>
+            </CardTitle>
+            <CardDescription>Events in the next 30 days</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {upcomingEvents.map((event, index) => (
+              <div key={index} className="flex items-center justify-between p-4 bg-white/50 rounded-lg border border-gray-100">
+                <div className="flex items-center space-x-3">
+                  <div className={`p-2 rounded-full ${event.type === 'Birthday' ? 'bg-pink-100' : 'bg-purple-100'}`}>
+                    <Calendar className={`h-4 w-4 ${event.type === 'Birthday' ? 'text-pink-600' : 'text-purple-600'}`} />
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900">{event.name}</p>
+                    <p className="text-sm text-gray-600">{event.type} • {event.date}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-medium text-gray-900">{event.name}</p>
-                  <p className="text-sm text-gray-600">{event.type} • {event.date}</p>
-                </div>
+                <Badge variant={event.daysLeft <= 7 ? "destructive" : "secondary"}>
+                  {event.daysLeft} days
+                </Badge>
               </div>
-              <Badge variant={event.daysLeft <= 7 ? "destructive" : "secondary"}>
-                {event.daysLeft} days
-              </Badge>
-            </div>
-          ))}
-        </CardContent>
-      </Card>
+            ))}
+          </CardContent>
+        </Card>
+
+        {/* Quick Actions */}
+        <Card className="bg-white/60 backdrop-blur-sm border-0 shadow-lg">
+          <CardHeader>
+            <CardTitle>Quick Actions</CardTitle>
+            <CardDescription>Get started with common tasks</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Button className="w-full justify-start bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+              <Calendar className="h-4 w-4 mr-2" />
+              Add Birthday Contact
+            </Button>
+            <Button variant="outline" className="w-full justify-start border-purple-200 hover:bg-purple-50">
+              <CalendarCheck className="h-4 w-4 mr-2" />
+              Add Anniversary Contact
+            </Button>
+            <Button variant="outline" className="w-full justify-start border-gray-200 hover:bg-gray-50">
+              <Send className="h-4 w-4 mr-2" />
+              Create Message Template
+            </Button>
+            <Button variant="outline" className="w-full justify-start border-gray-200 hover:bg-gray-50">
+              <Users className="h-4 w-4 mr-2" />
+              Import from Google Sheets
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };

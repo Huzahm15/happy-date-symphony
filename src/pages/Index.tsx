@@ -1,13 +1,12 @@
 
 import { useState } from "react";
-import { Calendar, CalendarCheck, Users, Settings, Plus, Send } from "lucide-react";
+import { Calendar, CalendarCheck, Users, Send, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import MessageTemplates from "@/components/MessageTemplates";
 import ContactManager from "@/components/ContactManager";
-import IntegrationSettings from "@/components/IntegrationSettings";
 import Dashboard from "@/components/Dashboard";
 
 const Index = () => {
@@ -40,7 +39,7 @@ const Index = () => {
       <div className="container mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           {/* Navigation Tabs */}
-          <TabsList className="grid w-full grid-cols-4 bg-white/60 backdrop-blur-sm">
+          <TabsList className="grid w-full grid-cols-3 bg-white/60 backdrop-blur-sm">
             <TabsTrigger value="dashboard" className="flex items-center space-x-2">
               <Calendar className="h-4 w-4" />
               <span>Dashboard</span>
@@ -52,10 +51,6 @@ const Index = () => {
             <TabsTrigger value="contacts" className="flex items-center space-x-2">
               <Users className="h-4 w-4" />
               <span>Contacts</span>
-            </TabsTrigger>
-            <TabsTrigger value="settings" className="flex items-center space-x-2">
-              <Settings className="h-4 w-4" />
-              <span>Integration</span>
             </TabsTrigger>
           </TabsList>
 
@@ -70,10 +65,6 @@ const Index = () => {
 
           <TabsContent value="contacts">
             <ContactManager />
-          </TabsContent>
-
-          <TabsContent value="settings">
-            <IntegrationSettings />
           </TabsContent>
         </Tabs>
       </div>

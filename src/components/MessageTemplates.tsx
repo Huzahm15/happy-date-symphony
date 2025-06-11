@@ -125,7 +125,7 @@ const MessageTemplates = () => {
                   placeholder="Enter your message template (use {{name}} for personalization)"
                   rows={4}
                 />
-                <p className="text-xs text-gray-500 mt-1">Use {"{"}{"{"}"name"{"}"{"}"} to insert the person's name automatically</p>
+                <p className="text-xs text-gray-500 mt-1">Use {"{{name}}"} to insert the person's name automatically</p>
               </div>
               <div className="flex justify-end space-x-2">
                 <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
